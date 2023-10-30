@@ -4,9 +4,11 @@ const userDetailsElement = document.querySelector('#user-details');
 const authBarElement = document.querySelector('#authentication-bar');
 
 // Elements for sensor readings
-const tempElement = document.getElementById('temp');
-const humElement = document.getElementById('hum');
-const presElement = document.getElementById('pres');
+const tmpElement = document.getElementById('tmp');
+const lvlElement = document.getElementById('lvl');
+const flwElement = document.getElementById('flw');
+const turElement = document.getElementById('tur');
+const autElement = document.getElementById('aut');
 
 // MANAGE LOGIN/LOGOUT UI
 const setupUI = (user) => {
@@ -23,26 +25,39 @@ const setupUI = (user) => {
     console.log(uid);
 
     // Database paths (with user UID)
-    var dbPathTemp = 'UsersData/' + uid.toString() + '/temperature';
-    var dbPathHum = 'UsersData/' + uid.toString() + '/humidity';
-    var dbPathPres = 'UsersData/' + uid.toString() + '/pressure';
+    var dbPathTmp = 'UsersData/' + uid.toString() + '/temperature';
+    var dbPathLvl = 'UsersData/' + uid.toString() + '/water-level';
+    var dbPathFlw = 'UsersData/' + uid.toString() + '/water-flow';
+    var dbPathTur = 'UsersData/' + uid.toString() + '/turbidity';
+    var dbPathAut = 'UsersData/' + uid.toString() + '/automation';
+    
 
     // Database references
-    var dbRefTemp = firebase.database().ref().child(dbPathTemp);
-    var dbRefHum = firebase.database().ref().child(dbPathHum);
-    var dbRefPres = firebase.database().ref().child(dbPathPres);
+    var dbRefTmp = firebase.database().ref().child(dbPathTmp);
+    var dbRefLvl = firebase.database().ref().child(dbPathLvl);
+    var dbRefFlw = firebase.database().ref().child(dbPathFlw);
+    var dbRefTur = firebase.database().ref().child(dbPathTur);
+    var dbRefAut = firebase.database().ref().child(dbPathAut);
 
     // Update page with new readings
-    dbRefTemp.on('value', (snap) => {
-      tempElement.innerText = snap.val().toFixed(2);
+    dbRefTmp.on('value', (snap) => {
+      tmpElement.innerText = snap.val().toFixed(2);
     });
-
-    dbRefHum.on('value', (snap) => {
-      humElement.innerText = snap.val().toFixed(2);
+    
+    dbRefLvl.on('value', (snap) => {
+      lvlElement.innerText = snap.val().toFixed(2);
     });
-
-    dbRefPres.on('value', (snap) => {
-      presElement.innerText = snap.val().toFixed(2);
+    
+    dbRefFlw.on('value', (snap) => {
+      flwElement.innerText = snap.val().toFixed(2);
+    });
+    
+    dbRefTur.on('value', (snap) => {
+      turElement.innerText = snap.val().toFixed(2);
+    });
+    
+    dbRefAut.on('value', (snap) => {
+      autElement.innerText = snap.val().toFixed(2);
     });
 
     // if user is logged out
