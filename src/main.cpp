@@ -157,7 +157,7 @@ void sendBool(String path, bool value)
 }
 
 // Create function to state the LED
-void stateLED(int interval)
+void stateLED(const long interval)
 {
   unsigned long curr = millis();
 
