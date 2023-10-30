@@ -1,0 +1,24 @@
+================ Add Firebase SDK ===============
+
+npm install firebase
+
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyCCac6HO8_6z6UloSV_YNJwGE-iJjIlrQM",
+  authDomain: "monitoring-web-app-8d4fd.firebaseapp.com",
+  databaseURL: "https://monitoring-web-app-8d4fd-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "monitoring-web-app-8d4fd",
+  storageBucket: "monitoring-web-app-8d4fd.appspot.com",
+  messagingSenderId: "70994297798",
+  appId: "1:70994297798:web:341c9d0e5ad77ca8aee8c7"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+
+====================================================================================================
