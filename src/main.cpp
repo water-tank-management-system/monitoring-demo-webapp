@@ -77,6 +77,9 @@ String autPath;
 unsigned long sendDataPrevMillis = 0;
 unsigned long timerDelay = 60000; // send new readings every minute
 
+// timer for LED
+unsigned long prev = 0;
+
 // ===== User-Defined Functions =====
 
 // Initialize WiFi Connection
@@ -153,14 +156,36 @@ void sendBool(String path, bool value)
   }
 }
 
+// Create function to state the LED
+void stateLED(int interval)
+{
+  unsigned long curr = millis();
+
+  if (curr - prev >= interval)
+  {
+    prev = curr;
+
+    if (digitalRead(BUILTIN_LED) == LOW)
+      digitalWrite(BUILTIN_LED, HIGH);
+    else
+      digitalWrite(BUILTIN_LED, LOW);
+  }  
+}
+
 
 // ===== Let's Go! =====
 
 void setup()
 {
+  // Baudrate for ESP-PC Communication
   Serial.begin(115200);
 
+  // init Random seed for random number
   randomSeed(analogRead(0));
+
+  // BUILTIN_LED initialize
+  pinMode(BUILTIN_LED, OUTPUT);
+  digitalWrite(BUILTIN_LED, LOW);
 
   // Initialize the WiFi Connection
   initWiFi();
@@ -235,6 +260,8 @@ void loop()
     sendFloat(flwPath, water_flow);
     sendInt(turPath, turbidity);
     sendBool(autPath, automation);
+
+    stateLED(2000);
   }
 
   count++;
