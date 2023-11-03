@@ -83,9 +83,11 @@ String tmpPath;
 String lvlPath;
 String flwPath;
 String turPath;
-String autPath;
 String dirPath;
 String empPath;
+String autPath;
+String clnPath;
+String fllPath;
 
 // Serial Data Communication Variables
 bool  auto_mode = true,
@@ -186,14 +188,14 @@ void loop()
         Serial.println("empty = " + empty);
         Serial.println("=====================");
 
-        state = ESP_TX;
+        state = RTDB_TX;
       }
       
       break;
     
     case RTDB_TX:
       // Send new readings to database
-      if (Firebase.ready() && (millis() - sendDataPrevMillis > timerDelay || sendDataPrevMillis == 0))
+      if (Firebase.ready())
       {
         sendDataPrevMillis = millis();
 
@@ -209,10 +211,10 @@ void loop()
         sendFloat(lvlPath, water_level);
         sendFloat(flwPath, water_flow);
         sendInt(turPath, turbidity);
-        sendBool(dirPath, dirty_state);
-        sendBool(empPath, empty_state);
+        sendInt(dirPath, dirty_state);
+        sendInt(empPath, empty_state);
 
-        stateLED(2000);
+        stateLED(500, 2);
       }
 
       count++;
@@ -220,7 +222,20 @@ void loop()
       break;
     
     case RTDB_RX:
-      Serial.println("Data from RTDB Received");
+      // Receive data from database
+      if (Firebase.ready())
+      {
+        sendDataPrevMillis = millis();
+
+        // Receive values from database:
+        auto_mode = receiveBool(autPath);
+        cleaning_state_user = receiveBool(clnPath);
+        fill_state_user = receiveBool(fllPath);
+
+        stateLED(500, 2);
+      }
+
+      state = ESP_TX;
       break;
     
     case ESP_TX:
@@ -305,9 +320,11 @@ void initFirebase()
   turPath = databasePath + "/turbidity";   // --> UsersData/<user_uid>/turbidity
   lvlPath = databasePath + "/water-level"; // --> UsersData/<user_uid>/water-level
   flwPath = databasePath + "/water-flow";  // --> UsersData/<user_uid>/water-flow
-  autPath = databasePath + "/automation";  // --> UsersData/<user_uid>/automation
   dirPath = databasePath + "/dirty-state"; // --> UsersData/<user_uid>/dirty-state
   empPath = databasePath + "/empty-state"; // --> UsersData/<user_uid>/empty-state
+  autPath = databasePath + "/automation";  // --> UsersData/<user_uid>/automation
+  clnPath = databasePath + "/cleaning-state";  // --> UsersData/<user_uid>/automation
+  fllPath = databasePath + "/filling-state";  // --> UsersData/<user_uid>/automation
 }
 
 // Write Float values to the database
@@ -407,17 +424,13 @@ void parsingData()
 }
 
 // Create function to state the LED
-void stateLED(const long interval)
+void stateLED(const long interval, int period)
 {
-  unsigned long curr = millis();
-
-  if (curr - prev >= interval)
+  for(int i=0; i <= period; i++)
   {
-    prev = curr;
-
-    if (digitalRead(BUILTIN_LED) == LOW)
-      digitalWrite(BUILTIN_LED, HIGH);
-    else
-      digitalWrite(BUILTIN_LED, LOW);
+    digitalWrite(BUILTIN_LED, HIGH);
+    delay(interval);
+    digitalWrite(BUILTIN_LED, LOW);
+    delay(interval);
   }
 }
