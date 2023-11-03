@@ -40,9 +40,11 @@ Firebase Project
 // Insert RTDB URLefine the RTDB URL
 #define DATABASE_URL "https://monitoring-web-app-8d4fd-default-rtdb.asia-southeast1.firebasedatabase.app/"
 
-// Serial Data Communication
+// Define Data Communication State
 #define ESP_TX D1
 #define ESP_RX D2
+#define RTDB_TX 200
+#define RTDB_RX 202
 
 
 // ===== User-Defined Object =====
@@ -69,6 +71,8 @@ float water_level = 0;
 float water_flow = 0;
 int   turbidity = 0;
 bool  automation = false;
+bool  dirty_state = false;
+bool  empty_state = false;
 
 // Variable to save USER UID
 String uid;
@@ -80,6 +84,8 @@ String lvlPath;
 String flwPath;
 String turPath;
 String autPath;
+String dirPath;
+String empPath;
 
 // Serial Data Communication Variables
 bool  auto_mode = true,
@@ -89,12 +95,12 @@ bool  auto_mode = true,
 int state = ESP_RX;
 
 String  dataIn,
-        data1,
-        data2,
-        data3,
-        data4,
-        data5,
-        data6;
+        temp,
+        level,
+        turb,
+        flow,
+        dirty,
+        empty;
 
 uint8_t indexOfA,
         indexOfB,
@@ -128,6 +134,9 @@ void sendInt(String path, int value);
 // Write Boolean values to the database
 void sendBool(String path, bool value);
 
+// Receive Boolean values from the database
+bool receiveBool(String path);
+
 // Parse the Data from master
 void parsingData();
 
@@ -160,35 +169,78 @@ void setup()
 }
 
 void loop()
-{    
-  // create random number
-  randNum = random(0, 100);
-
-  // Send new readings to database
-  if (Firebase.ready() && (millis() - sendDataPrevMillis > timerDelay || sendDataPrevMillis == 0))
+{
+  switch(state)    
   {
-    sendDataPrevMillis = millis();
+    case ESP_RX:
+      while (espSS.available() > 0)
+      {
+        dataIn = espSS.readStringUntil('\n');
+        parsingData();
+        Serial.println("Data recieved");
+        Serial.println("temp = " + temp);
+        Serial.println("level = " + level);
+        Serial.println("turb = " + turb);
+        Serial.println("flow = " + flow);
+        Serial.println("dirty = " + dirty);
+        Serial.println("empty = " + empty);
+        Serial.println("=====================");
 
-    // Get parameters values
-    temperature = random(20, 40) + ((float)randNum / 100.0);
-    water_level = random(0, 100) + ((float)randNum / 100.0);
-    water_flow = random(0, 100) + ((float)randNum / 100.0);
-    turbidity = random(0, 50);
+        state = ESP_TX;
+      }
+      
+      break;
     
-    if (count % 2 == 0) { automation = true; }
-    else { automation = false; }
+    case RTDB_TX:
+      // Send new readings to database
+      if (Firebase.ready() && (millis() - sendDataPrevMillis > timerDelay || sendDataPrevMillis == 0))
+      {
+        sendDataPrevMillis = millis();
 
-    // Send values to database:
-    sendFloat(tmpPath, temperature);
-    sendFloat(lvlPath, water_level);
-    sendFloat(flwPath, water_flow);
-    sendInt(turPath, turbidity);
-    sendBool(autPath, automation);
+        temperature = temp.toFloat();
+        water_level = level.toFloat();
+        water_flow = flow.toFloat();
+        turbidity = turb.toFloat();
+        dirty_state = dirty.toInt();
+        empty_state = empty.toInt();
 
-    stateLED(2000);
+        // Send values to database:
+        sendFloat(tmpPath, temperature);
+        sendFloat(lvlPath, water_level);
+        sendFloat(flwPath, water_flow);
+        sendInt(turPath, turbidity);
+        sendBool(dirPath, dirty_state);
+        sendBool(empPath, empty_state);
+
+        stateLED(2000);
+      }
+
+      count++;
+      state = RTDB_RX;
+      break;
+    
+    case RTDB_RX:
+      Serial.println("Data from RTDB Received");
+      break;
+    
+    case ESP_TX:
+      Serial.println("Data transmitted: ");
+      espSS.print(auto_mode); espSS.print("A");
+      Serial.println(auto_mode);
+
+      espSS.print(cleaning_state_user); espSS.print("B");
+      Serial.println(cleaning_state_user);
+
+      espSS.print(fill_state_user); espSS.print("C");
+      Serial.println(fill_state_user);
+
+      espSS.print("\n");
+      Serial.println("=====================");
+      delay(1000);
+
+      state = ESP_RX;
+      break;
   }
-
-  count++;
 }
 
 
@@ -254,6 +306,8 @@ void initFirebase()
   lvlPath = databasePath + "/water-level"; // --> UsersData/<user_uid>/water-level
   flwPath = databasePath + "/water-flow";  // --> UsersData/<user_uid>/water-flow
   autPath = databasePath + "/automation";  // --> UsersData/<user_uid>/automation
+  dirPath = databasePath + "/dirty-state"; // --> UsersData/<user_uid>/dirty-state
+  empPath = databasePath + "/empty-state"; // --> UsersData/<user_uid>/empty-state
 }
 
 // Write Float values to the database
@@ -316,6 +370,24 @@ void sendBool(String path, bool value)
   }
 }
 
+// Receive Boolean values from the database
+bool receiveBool(String path)
+{
+  if (Firebase.RTDB.getBool(&fbdo, path.c_str()))
+  {
+    if (fbdo.dataType() == "bool")
+    {
+      int val = fbdo.boolData();
+
+      return val;
+    }
+  }
+  else
+  {
+    Serial.println(fbdo.errorReason());
+  }
+}
+
 // Parse the Data from master
 void parsingData()
 {
@@ -326,12 +398,12 @@ void parsingData()
   indexOfE = dataIn.indexOf("E");
   indexOfF = dataIn.indexOf("F");
 
-  data1 = dataIn.substring(0, indexOfA);
-  data2 = dataIn.substring(indexOfA + 1, indexOfB);
-  data3 = dataIn.substring(indexOfB + 1, indexOfC);
-  data4 = dataIn.substring(indexOfC + 1, indexOfD);
-  data5 = dataIn.substring(indexOfD + 1, indexOfE);
-  data6 = dataIn.substring(indexOfE + 1, indexOfF);
+  temp  = dataIn.substring(0, indexOfA);
+  level = dataIn.substring(indexOfA + 1, indexOfB);
+  turb  = dataIn.substring(indexOfB + 1, indexOfC);
+  flow  = dataIn.substring(indexOfC + 1, indexOfD);
+  dirty = dataIn.substring(indexOfD + 1, indexOfE);
+  empty = dataIn.substring(indexOfE + 1, indexOfF);
 }
 
 // Create function to state the LED
