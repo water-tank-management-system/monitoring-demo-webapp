@@ -34,8 +34,8 @@ Firebase Project
 #define API_KEY "AIzaSyCCac6HO8_6z6UloSV_YNJwGE-iJjIlrQM"
 
 // Insert Authorized Email and Corresponding Password
-#define USER_EMAIL "nmuafi1@gmail.com"
-#define USER_PASSWORD "naufal153"
+#define USER_EMAIL "admin@capstonea9.id"
+#define USER_PASSWORD "nilaicapstonea"
 
 // Insert RTDB URLefine the RTDB URL
 #define DATABASE_URL "https://monitoring-web-app-8d4fd-default-rtdb.asia-southeast1.firebasedatabase.app/"
@@ -143,7 +143,7 @@ bool receiveBool(String path);
 void parsingData();
 
 // Create function to state the LED
-void stateLED(const long interval);
+void stateLED(const long interval, int period);
 
 
 // ===== Let's Go! =====
@@ -390,19 +390,20 @@ void sendBool(String path, bool value)
 // Receive Boolean values from the database
 bool receiveBool(String path)
 {
+  int val = 0;
+
   if (Firebase.RTDB.getBool(&fbdo, path.c_str()))
   {
     if (fbdo.dataType() == "bool")
     {
-      int val = fbdo.boolData();
-
-      return val;
+      val = fbdo.boolData();
     }
   }
   else
   {
     Serial.println(fbdo.errorReason());
   }
+  return val;
 }
 
 // Parse the Data from master
