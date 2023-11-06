@@ -9,14 +9,12 @@ Firebase Project
 // ===== Import Necessary Library/Packages =====
 
 #include <Arduino.h>
-#if defined(ESP32)
-  #include <WiFi.h>
-#elif defined(ESP8266)
-  #include <ESP8266WiFi.h>
-#endif
+#include <ESP8266WiFi.h>
 #include <Firebase_ESP_Client.h>
 #include <Wire.h>
 #include <SoftwareSerial.h>
+#include <NTPClient.h>
+#include <WiFiUdp.h>
 
 // Provide the token generation process info.
 #include "addons/TokenHelper.h"
@@ -54,9 +52,15 @@ FirebaseData fbdo;
 FirebaseAuth auth;
 FirebaseConfig config;
 
+// Define Firebase JSON objects
+FirebaseJson json;
+
 // Create Software Serial Object
 SoftwareSerial espSS(ESP_RX, ESP_TX);
 
+// Define NTP Client to get time
+WiFiUDP ntpUDP;
+NTPClient timeClient(ntpUDP, "pool.ntp.org");
 
 // ===== User-Defined Variables =====
 
@@ -74,11 +78,14 @@ bool  automation = false;
 bool  dirty_state = false;
 bool  empty_state = false;
 
-// Variable to save USER UID
-String uid;
+String uid;         // Variable to save USER UID
+String parentPath;  // Parent Node (to be updated in every loop)
 
-// Variables to save database paths
+// ===== Variables to save database paths
+
+// Database main path (to be updated in setup with the user UID)
 String databasePath;
+// Database child nodes
 String tmpPath;
 String lvlPath;
 String flwPath;
@@ -88,6 +95,12 @@ String empPath;
 String autPath;
 String clnPath;
 String fllPath;
+
+// Data Logging Variables
+String timePath = "/timestamp";
+
+// Variable to save current epoch time
+int timestamp;
 
 // Serial Data Communication Variables
 bool  auto_mode = true,
@@ -113,7 +126,7 @@ uint8_t indexOfA,
 
 // Timer variables
 unsigned long sendDataPrevMillis = 0;
-unsigned long timerDelay = 60000; // send new readings every minute
+unsigned long timerDelay = 20000; // send new readings every minute
 
 // timer for LED
 unsigned long prev = 0;
@@ -127,6 +140,9 @@ void initWiFi();
 // Initialize Firebase Configuration
 void initFirebase();
 
+// Function that gets current epoch time
+unsigned long getTime();
+
 // Write Float values to the database
 void sendFloat(String path, float value);
 
@@ -135,6 +151,9 @@ void sendInt(String path, int value);
 
 // Write Boolean values to the database
 void sendBool(String path, bool value);
+
+// Write Data Log in JSON to the database
+void sendDataLog();
 
 // Receive Boolean values from the database
 bool receiveBool(String path);
@@ -155,6 +174,9 @@ void setup()
 
   // Baudrate for ESP - Arduino Communication
   espSS.begin(9600);
+
+  // Initialize the timestamp
+  timeClient.begin();
 
   // init Random seed for random number
   randomSeed(analogRead(0));
@@ -195,7 +217,7 @@ void loop()
     
     case RTDB_TX:
       // Send new readings to database
-      if (Firebase.ready())
+      if (Firebase.ready() && (millis() - sendDataPrevMillis > timerDelay || sendDataPrevMillis == 0))
       {
         sendDataPrevMillis = millis();
 
@@ -223,7 +245,7 @@ void loop()
     
     case RTDB_RX:
       // Receive data from database
-      if (Firebase.ready())
+      if (Firebase.ready() && (millis() - sendDataPrevMillis > timerDelay || sendDataPrevMillis == 0))
       {
         sendDataPrevMillis = millis();
 
@@ -315,6 +337,9 @@ void initFirebase()
   // Update database path
   databasePath = "/UsersData/" + uid;
 
+  // Update database path for data logging
+  dataLogPath = "/UsersData/" + uid + "/systems";
+
   // Update database path for sensor readings
   tmpPath = databasePath + "/temperature"; // --> UsersData/<user_uid>/temperature
   turPath = databasePath + "/turbidity";   // --> UsersData/<user_uid>/turbidity
@@ -325,6 +350,18 @@ void initFirebase()
   autPath = databasePath + "/automation";  // --> UsersData/<user_uid>/automation
   clnPath = databasePath + "/cleaning-state";  // --> UsersData/<user_uid>/automation
   fllPath = databasePath + "/filling-state";  // --> UsersData/<user_uid>/automation
+
+  sendBool(autPath, true);
+  sendBool(clnPath, false);
+  sendBool(fllPath, false);
+}
+
+// Function that gets current epoch time
+unsigned long getTime()
+{
+  timeClient.update();
+  unsigned long now = timeClient.getEpochTime();
+  return now;
 }
 
 // Write Float values to the database
@@ -385,6 +422,20 @@ void sendBool(String path, bool value)
     Serial.println("FAILED");
     Serial.println("REASON: " + fbdo.errorReason());
   }
+}
+
+// Write Data Log in JSON to the database
+void sendDataLog()
+{
+  // Get current timestamp
+  timestamp = getTime();
+  Serial.print("time: ");
+  Serial.println(timestamp);
+
+  parentPath = dataLogPath + "/" + String(timestamp);
+
+  json.set(tmpPath.c_str(), String(temperature));
+  json.set(timePath, String(timestamp));
 }
 
 // Receive Boolean values from the database
