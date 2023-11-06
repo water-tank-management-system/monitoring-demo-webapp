@@ -97,6 +97,10 @@ String clnPath;
 String fllPath;
 
 // Data Logging Variables
+String tmpLog = "/temperature";
+String lvlLog = "/water-level";
+String flwLog = "/water-flow";
+String turLog = "/turbidity";
 String timePath = "/timestamp";
 
 // Variable to save current epoch time
@@ -434,8 +438,13 @@ void sendDataLog()
 
   parentPath = dataLogPath + "/" + String(timestamp);
 
-  json.set(tmpPath.c_str(), String(temperature));
+  json.set(tmpLog.c_str(), String(temperature));
+  json.set(flwLog.c_str(), String(water_flow));
+  json.set(lvlLog.c_str(), String(water_level));
+  json.set(turLog.c_str(), String(turbidity));
   json.set(timePath, String(timestamp));
+
+  Serial.printf("Set json... %s\n", Firebase.RTDB.setJSON(&fbdo, parentPath.c_str(), &json) ? "ok" : fbdo.errorReason().c_str());
 }
 
 // Receive Boolean values from the database
