@@ -21,6 +21,9 @@ Firebase Project
 // Provide the RTDB payload printing info and other helper functions.
 #include "addons/RTDBHelper.h"
 
+// User-Define Library
+#include "hello.h"
+
 
 // ===== User-Defined Constant =====
 
@@ -179,6 +182,8 @@ void setup()
 
   // Baudrate for ESP - Arduino Communication
   espSS.begin(9600);
+
+  hai();
 
   // Initialize the timestamp
   timeClient.begin();
