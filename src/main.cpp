@@ -97,6 +97,7 @@ String clnPath;
 String fllPath;
 
 // Data Logging Variables
+String dataLogPath;
 String tmpLog = "/temperature";
 String lvlLog = "/water-level";
 String flwLog = "/water-flow";
