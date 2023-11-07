@@ -32,80 +32,80 @@ Capstone A9
 #define RTDB_TX 200
 #define RTDB_RX 202
 
+
 // ===== User-Defined Variables =====
 
 // ===== Variables to save database paths
 
-String uid;        // Variable to save USER UID
-String parentPath; // Parent Node (to be updated in every loop)
+extern String   uid,        // Variable to save USER UID
+                parentPath; // Parent Node (to be updated in every loop)
 
 // Database main path (to be updated in setup with the user UID)
-String databasePath;
+extern String databasePath;
 
 // Database child nodes
-String tmpPath;
-String lvlPath;
-String flwPath;
-String turPath;
-String dirPath;
-String empPath;
-String autPath;
-String clnPath;
-String fllPath;
+extern String tmpPath,
+              lvlPath,
+              flwPath,
+              turPath,
+              dirPath,
+              empPath,
+              autPath,
+              clnPath,
+              fllPath;
 
 // Data Logging Variables
-String dataLogPath;
-String tmpLog = "/temperature";
-String lvlLog = "/water-level";
-String flwLog = "/water-flow";
-String turLog = "/turbidity";
-String timePath = "/timestamp";
+extern String   dataLogPath,
+                tmpLog,
+                lvlLog,
+                flwLog,
+                turLog,
+                timePath;
 
 // Variable to save current epoch time
-int timestamp;
+extern int timestamp;
 
 // ===== Variables Related to System Communication
 
 // System Readings Data Variables
-float temperature = 0,
-      water_level = 0,
-      water_flow = 0;
-int turbidity = 0;
-bool automation = false,
-     dirty_state = false,
-     empty_state = false;
+extern float  temperature,
+              water_level,
+              water_flow;
+extern int turbidity;
+extern bool automation,
+            dirty_state,
+            empty_state;
 
 // User State Data Variables
-bool auto_mode = true,
-     cleaning_state_user = false,
-     fill_state_user = false;
+extern bool auto_mode,
+            cleaning_state_user,
+            fill_state_user;
 
 // Initial state
-int state = ESP_RX;
+extern int state;
 
 // Data Transfer Variables
-String dataIn,
-    temp,
-    level,
-    turb,
-    flow,
-    dirty,
-    empty;
+extern String dataIn,
+              temp,
+              level,
+              turb,
+              flow,
+              dirty,
+              empty;
 
 // Data Parsing Variables
-uint8_t indexOfA,
-    indexOfB,
-    indexOfC,
-    indexOfD,
-    indexOfE,
-    indexOfF;
+extern uint8_t  indexOfA,
+                indexOfB,
+                indexOfC,
+                indexOfD,
+                indexOfE,
+                indexOfF;
 
 // Timer variables
-unsigned long sendDataPrevMillis = 0;
-unsigned long timerDelay = 20000; // send new readings every minute
+extern unsigned long  sendDataPrevMillis,
+                      timerDelay, // send new readings every minute
+                      prev;
 
-// timer for LED
-unsigned long prev = 0;
 
 // ===== User-Defined Functions Declarations =====
 

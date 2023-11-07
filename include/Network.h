@@ -33,19 +33,19 @@ Related to Networking
 // ===== User-Defined Object =====
 
 // Define Firebase objects
-FirebaseData fbdo;
-FirebaseAuth auth;
-FirebaseConfig config;
+extern FirebaseData fbdo;
+extern FirebaseAuth auth;
+extern FirebaseConfig config;
 
 // Define Firebase JSON objects
-FirebaseJson json;
+extern FirebaseJson json;
 
 // Create Software Serial Object
-SoftwareSerial espSS(ESP_RX, ESP_TX);
+extern SoftwareSerial espSS;
 
 // Define NTP Client to get time
-WiFiUDP ntpUDP;
-NTPClient timeClient(ntpUDP, "pool.ntp.org");
+extern WiFiUDP ntpUDP;
+extern NTPClient timeClient;
 
 
 // ===== User-Defined Functions Declarations =====
@@ -58,5 +58,25 @@ void initFirebase();
 
 // Function that gets current epoch time
 unsigned long getTime();
+
+// ===== User-Defined Functions Declarations =====
+
+// Write Float values to the database
+void sendFloat(String path, float value);
+
+// Write Int values to the database
+void sendInt(String path, int value);
+
+// Write Boolean values to the database
+void sendBool(String path, bool value);
+
+// Write Data Log in JSON to the database
+void sendDataLog();
+
+// Receive Boolean values from the database
+bool receiveBool(String path);
+
+// Parse the Data from master
+void parsingData();
 
 #endif
