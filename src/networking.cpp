@@ -9,6 +9,24 @@ Related to Networking
 #include "Networking.h"
 
 
+// ===== User-Defined Object =====
+
+// Define Firebase objects
+FirebaseData fbdo;
+FirebaseAuth auth;
+FirebaseConfig config;
+
+// Define Firebase JSON objects
+FirebaseJson json;
+
+// Create Software Serial Object
+SoftwareSerial espSS(ESP_RX, ESP_TX);
+
+// Define NTP Client to get time
+WiFiUDP ntpUDP;
+NTPClient timeClient(ntpUDP, "pool.ntp.org");
+
+
 // Initialize WiFi Connection
 void initWiFi()
 {

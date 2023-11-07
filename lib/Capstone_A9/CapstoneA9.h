@@ -27,41 +27,6 @@ Capstone A9
 #define RTDB_RX 202
 
 
-// ===== User-Defined Constant =====
-
-// Insert your network credentials
-#define WIFI_SSID "Muafi"
-#define WIFI_PASSWORD "pwnya11ya"
-
-// Insert Firebase project API Key
-#define API_KEY "AIzaSyCCac6HO8_6z6UloSV_YNJwGE-iJjIlrQM"
-
-// Insert Authorized Email and Corresponding Password
-#define USER_EMAIL "admin@capstonea9.id"
-#define USER_PASSWORD "nilaicapstonea"
-
-// Insert RTDB URLefine the RTDB URL
-#define DATABASE_URL "https://monitoring-web-app-8d4fd-default-rtdb.asia-southeast1.firebasedatabase.app/"
-
-
-// ===== User-Defined Object =====
-
-// Define Firebase objects
-extern FirebaseData fbdo;
-extern FirebaseAuth auth;
-extern FirebaseConfig config;
-
-// Define Firebase JSON objects
-extern FirebaseJson json;
-
-// Create Software Serial Object
-extern SoftwareSerial espSS;
-
-// Define NTP Client to get time
-extern WiFiUDP ntpUDP;
-extern NTPClient timeClient;
-
-
 // ===== User-Defined Variables =====
 
 // ===== Variables to save database paths

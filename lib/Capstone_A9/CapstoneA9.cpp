@@ -9,24 +9,6 @@ Capstone A9
 #include <CapstoneA9.h>
 
 
-// ===== User-Defined Object =====
-
-// Define Firebase objects
-FirebaseData fbdo;
-FirebaseAuth auth;
-FirebaseConfig config;
-
-// Define Firebase JSON objects
-FirebaseJson json;
-
-// Create Software Serial Object
-SoftwareSerial espSS(ESP_RX, ESP_TX);
-
-// Define NTP Client to get time
-WiFiUDP ntpUDP;
-NTPClient timeClient(ntpUDP, "pool.ntp.org");
-
-
 // ===== User-Defined Variables =====
 
 // ===== Variables to save database paths
