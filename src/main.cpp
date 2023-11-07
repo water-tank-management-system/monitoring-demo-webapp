@@ -7,6 +7,8 @@ Firebase Project
 
 
 #include <CapstoneA9.h>
+#include "Networking.h"
+#include "Data_Communication.h"
 
 // Provide the token generation process info.
 #include "addons/TokenHelper.h"
