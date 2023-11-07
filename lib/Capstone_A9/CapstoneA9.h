@@ -18,12 +18,6 @@ Capstone A9
 #include <NTPClient.h>
 #include <WiFiUdp.h>
 
-// Provide the token generation process info.
-#include "addons/TokenHelper.h"
-// Provide the RTDB payload printing info and other helper functions.
-#include "addons/RTDBHelper.h"
-
-
 // ===== User-Defined Constant =====
 
 // Define Data Communication State
