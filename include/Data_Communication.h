@@ -6,7 +6,11 @@ Related to Data Communication
 ======================================== */
 
 
-#include "CapstoneA9.h"
+#ifndef Data_Communication_H
+#define Data_Communication_H
+
+
+#include <CapstoneA9.h>
 
 
 // ===== User-Defined Functions Declarations =====
@@ -28,3 +32,5 @@ bool receiveBool(String path);
 
 // Parse the Data from master
 void parsingData();
+
+#endif

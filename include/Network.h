@@ -6,7 +6,11 @@ Related to Networking
 ======================================== */
 
 
-#include "CapstoneA9.h"
+#ifndef Network_H
+#define Network_H
+
+
+#include <CapstoneA9.h>
 
 
 // ===== User-Defined Constant =====
@@ -54,3 +58,5 @@ void initFirebase();
 
 // Function that gets current epoch time
 unsigned long getTime();
+
+#endif

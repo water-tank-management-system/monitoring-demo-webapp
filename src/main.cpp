@@ -6,9 +6,9 @@ Firebase Project
 ======================================== */
 
 
-#include "CapstoneA9.h"
-#include "Network.h"
-#include "Data_Communication.h"
+#include <CapstoneA9.h>
+#include <Network.h>
+#include <Data_Communication.h>
 
 
 // ===== Let's Go! =====
@@ -122,20 +122,5 @@ void loop()
 
       state = ESP_RX;
       break;
-  }
-}
-
-
-// ===== User-Defined Functions =====
-
-// Create function to state the LED
-void stateLED(const long interval, int period)
-{
-  for (int i = 0; i <= period; i++)
-  {
-    digitalWrite(BUILTIN_LED, HIGH);
-    delay(interval);
-    digitalWrite(BUILTIN_LED, LOW);
-    delay(interval);
   }
 }

@@ -5,6 +5,8 @@ Capstone A9
 
 ======================================== */
 
+#ifndef CapstoneA9_H
+#define CapstoneA9_H
 
 // ===== Import Necessary Library/Packages =====
 
@@ -29,7 +31,6 @@ Capstone A9
 #define ESP_RX D2
 #define RTDB_TX 200
 #define RTDB_RX 202
-
 
 // ===== User-Defined Variables =====
 
@@ -69,10 +70,10 @@ int timestamp;
 float temperature = 0,
       water_level = 0,
       water_flow = 0;
-int   turbidity = 0;
-bool  automation = false,
-      dirty_state = false,
-      empty_state = false;
+int turbidity = 0;
+bool automation = false,
+     dirty_state = false,
+     empty_state = false;
 
 // User State Data Variables
 bool auto_mode = true,
@@ -83,21 +84,21 @@ bool auto_mode = true,
 int state = ESP_RX;
 
 // Data Transfer Variables
-String  dataIn,
-        temp,
-        level,
-        turb,
-        flow,
-        dirty,
-        empty;
+String dataIn,
+    temp,
+    level,
+    turb,
+    flow,
+    dirty,
+    empty;
 
 // Data Parsing Variables
 uint8_t indexOfA,
-        indexOfB,
-        indexOfC,
-        indexOfD,
-        indexOfE,
-        indexOfF;
+    indexOfB,
+    indexOfC,
+    indexOfD,
+    indexOfE,
+    indexOfF;
 
 // Timer variables
 unsigned long sendDataPrevMillis = 0;
@@ -106,8 +107,9 @@ unsigned long timerDelay = 20000; // send new readings every minute
 // timer for LED
 unsigned long prev = 0;
 
-
 // ===== User-Defined Functions Declarations =====
 
 // Create function to state the LED
 void stateLED(const long interval, int period);
+
+#endif
