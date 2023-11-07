@@ -7,7 +7,6 @@ Firebase Project
 
 
 #include <CapstoneA9.h>
-#include "Network.h"
 
 
 // ===== Let's Go! =====
