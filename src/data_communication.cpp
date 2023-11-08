@@ -108,20 +108,35 @@ bool receiveBool(String path)
   return val;
 }
 
+// Receive Int values from the database
+bool receiveInt(String path)
+{
+  int val = 0;
+
+  if (Firebase.RTDB.getInt(&fbdo, path.c_str()))
+  {
+    if (fbdo.dataType() == "int")
+    {
+      val = fbdo.intData();
+    }
+  }
+  else
+  {
+    Serial.println(fbdo.errorReason());
+  }
+  return val;
+}
+
 // Parse the Data from master
 void parsingData()
 {
   indexOfA = dataIn.indexOf("A");
   indexOfB = dataIn.indexOf("B");
   indexOfC = dataIn.indexOf("C");
-  indexOfD = dataIn.indexOf("D");
-  indexOfE = dataIn.indexOf("E");
-  indexOfF = dataIn.indexOf("F");
+  indexOfD = dataIn.indexOf("D");  
 
   temp = dataIn.substring(0, indexOfA);
   level = dataIn.substring(indexOfA + 1, indexOfB);
   turb = dataIn.substring(indexOfB + 1, indexOfC);
-  flow = dataIn.substring(indexOfC + 1, indexOfD);
-  dirty = dataIn.substring(indexOfD + 1, indexOfE);
-  empty = dataIn.substring(indexOfE + 1, indexOfF);
+  flow = dataIn.substring(indexOfC + 1, indexOfD);  
 }

@@ -56,9 +56,7 @@ void loop()
         Serial.println("temp = " + temp);
         Serial.println("level = " + level);
         Serial.println("turb = " + turb);
-        Serial.println("flow = " + flow);
-        Serial.println("dirty = " + dirty);
-        Serial.println("empty = " + empty);
+        Serial.println("flow = " + flow);        
         Serial.println("=====================");
 
         state = RTDB_TX;
@@ -75,17 +73,19 @@ void loop()
         temperature = temp.toFloat();
         water_level = level.toFloat();
         water_flow = flow.toFloat();
-        turbidity = turb.toFloat();
-        dirty_state = dirty.toInt();
-        empty_state = empty.toInt();
+        turbidity = turb.toFloat();        
+
+        temperature = random(10, 40) + ((float)random(0, 100) / 100.0);
+        water_level = random(0, 60) + ((float)random(0, 100) / 100.0);
+        water_flow  = random(0, 60) + ((float)random(0, 100) / 100.0);
+        turbidity   = random(0, 30);        
 
         // Send values to database:
         sendFloat(tmpPath, temperature);
         sendFloat(lvlPath, water_level);
         sendFloat(flwPath, water_flow);
-        sendInt(turPath, turbidity);
-        sendInt(dirPath, dirty_state);
-        sendInt(empPath, empty_state);
+        sendInt(turPath, turbidity);  
+        sendDataLog();
 
         stateLED(500, 2);
       }
@@ -100,14 +100,21 @@ void loop()
         sendDataPrevMillis = millis();
 
         // Receive values from database:
-        auto_mode = receiveBool(autPath);
-        cleaning_state_user = receiveBool(clnPath);
-        fill_state_user = receiveBool(fllPath);
+        auto_mode = receiveInt(autPath);
+        cleaning_state_user = receiveInt(clnPath);
+        fill_state_user = receiveInt(fllPath);
+
+        Serial.println("=========================");
+        Serial.print(" automation\t: ");     Serial.println(auto_mode);
+        Serial.print(" cleaning-state\t: "); Serial.println(cleaning_state_user);
+        Serial.print(" fill-state\t: ");     Serial.println(fill_state_user);
+        Serial.println("=========================\n");
 
         stateLED(500, 2);
-      }
+      }      
 
-      state = ESP_TX;
+      // state = ESP_TX;
+      state = RTDB_TX;
       break;
     
     case ESP_TX:
@@ -171,20 +178,18 @@ void initFirebase()
   databasePath = "/UsersData/" + uid;
 
   // Update database path for data logging
-  dataLogPath = "/UsersData/" + uid + "/systems";
+  dataLogPath = "/UsersData/" + uid + "/log";
 
   // Update database path for sensor readings
   tmpPath = databasePath + "/temperature";    // --> UsersData/<user_uid>/temperature
   turPath = databasePath + "/turbidity";      // --> UsersData/<user_uid>/turbidity
   lvlPath = databasePath + "/water-level";    // --> UsersData/<user_uid>/water-level
-  flwPath = databasePath + "/water-flow";     // --> UsersData/<user_uid>/water-flow
-  dirPath = databasePath + "/dirty-state";    // --> UsersData/<user_uid>/dirty-state
-  empPath = databasePath + "/empty-state";    // --> UsersData/<user_uid>/empty-state
+  flwPath = databasePath + "/water-flow";     // --> UsersData/<user_uid>/water-flow  
   autPath = databasePath + "/automation";     // --> UsersData/<user_uid>/automation
-  clnPath = databasePath + "/cleaning-state"; // --> UsersData/<user_uid>/automation
-  fllPath = databasePath + "/filling-state";  // --> UsersData/<user_uid>/automation
+  clnPath = databasePath + "/cleaning-state"; // --> UsersData/<user_uid>/cleaning-state
+  fllPath = databasePath + "/filling-state";  // --> UsersData/<user_uid>/filling-state
 
-  sendBool(autPath, true);
-  sendBool(clnPath, false);
-  sendBool(fllPath, false);
+  sendInt(autPath, 1);
+  sendInt(clnPath, 0);
+  sendInt(fllPath, 0);
 }
