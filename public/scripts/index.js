@@ -30,7 +30,6 @@ const setupUI = (user) => {
     var dbPathFlw = 'UsersData/' + uid.toString() + '/water-flow';
     var dbPathTur = 'UsersData/' + uid.toString() + '/turbidity';
     var dbPathAut = 'UsersData/' + uid.toString() + '/automation';
-    
 
     // Database references
     var dbRefTmp = firebase.database().ref().child(dbPathTmp);
@@ -43,19 +42,19 @@ const setupUI = (user) => {
     dbRefTmp.on('value', (snap) => {
       tmpElement.innerText = snap.val().toFixed(2);
     });
-    
+
     dbRefLvl.on('value', (snap) => {
       lvlElement.innerText = snap.val().toFixed(2);
     });
-    
+
     dbRefFlw.on('value', (snap) => {
       flwElement.innerText = snap.val().toFixed(2);
     });
-    
+
     dbRefTur.on('value', (snap) => {
       turElement.innerText = snap.val().toFixed(2);
     });
-    
+
     dbRefAut.on('value', (snap) => {
       autElement.innerText = snap.val().toFixed(2);
     });
