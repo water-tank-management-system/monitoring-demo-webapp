@@ -45,15 +45,6 @@
       <h1>Water Tank Monitoring <i class="fas fa-clipboard-list"></i></h1>
     </div>
 
-    <!--AUTHENTICATION BAR (USER DETAILS/LOGOUT BUTTON)-->
-    <div id="authentication-bar" style="display: none">
-      <p>
-        <span id="authentication-status">User logged in</span>
-        <span id="user-details">USEREMAIL</span>
-        <a href="/" id="logout-link">(logout)</a>
-      </p>
-    </div>
-
     <!--LOGIN FORM-->
     <form id="login-form" style="display: none">
       <div class="form-elements-container">
@@ -84,7 +75,7 @@
         <!-- TEMPERATURE -->
         <div class="card">
           <p>
-            <i class="fas fa-thermometer-half" style="color: #059e8a"></i>
+            <!-- <i class="fas fa-thermometer-half" style="color: #059e8a"></i> -->
             TEMPERATURE
           </p>
           <p>
@@ -93,16 +84,16 @@
         </div>
         <!-- WATER LEVEL -->
         <div class="card">
-          <p>WATER LEVEL</p>
+          <p>VOLUME</p>
           <p>
-            <span class="reading"><span id="lvl"></span> cm </span>
+            <span class="reading"><span id="lvl"></span> % </span>
           </p>
         </div>
         <!-- WATER FLOW -->
         <div class="card">
           <p>WATER FLOW</p>
           <p>
-            <span class="reading"><span id="flw"></span> L </span>
+            <span class="reading"><span id="flw"></span> mL/min </span>
           </p>
         </div>
         <!-- TURBIDITY -->
@@ -114,11 +105,83 @@
         </div>
         <!-- AUTOMATION -->
         <div class="card">
-          <p>AUTOMATION STATE</p>
+          <p>AUTOMATION</p>
+          
+          <div class = "progress">
+              <div class = "toggle-btn" id="unact">
+                <div class = "inner-circle"></div>
+              </div>
+
+              <div class="toggle-btn active" id="act">
+                <div class = "inner-circle"></div>
+              </div>
+          </div>
+        </div>
+        <!-- CLEANING STATE -->
+        <div class="card">
+          <p>CLEANING STATE</p>
+          
+          <div class = "progress">
+              <div class = "toggle-btn" id="uncln">
+                <div class = "inner-circle"></div>
+              </div>
+
+              <div class="toggle-btn active" id="cln">
+                <div class = "inner-circle"></div>
+              </div>
+          </div>
+        </div>
+        <!-- FILLING STATE -->
+        <div class="card">
+          <p>FILLING STATE</p>
+          
+          <div class = "progress">
+              <div class = "toggle-btn" id="unfil">
+                <div class = "inner-circle"></div>
+              </div>
+
+              <div class="toggle-btn active" id="fil">
+                <div class = "inner-circle"></div>
+              </div>
+          </div>
+        </div>
+        <!-- INDICATOR -->
+        <div class="card">
+          <p>INDICATOR</p>
+          <div class="indicators-container">
+            
+            <!-- INDICATOR FOR WATER LEVEL -->
+            <div class="indicator-wrapper">
+              <p> EMPTY </p>
+              <div id="water-level-indicator" class="indicator"></div>
+            </div>
+        
+            <!-- INDICATOR FOR TURBIDITY -->
+            <div class="indicator-wrapper">
+              <p> DIRTY</p>
+              <div id="dirty-water-indicator" class="indicator"></div>
+            </div>
+          </div>
+        </div>
+        
+
+        <!-- <div class="card">
+          <p> WATER LEVEL INDICATOR </p>
+          <div class="indicator" id="water-level-indicator" ></div>
+
+          <p> DIRTY WATER INDICATOR </p>
+          <div class="indicator" id="dirty-water-indicator" ></div>
+        </div> -->
+
+        <!--AUTHENTICATION BAR (USER DETAILS/LOGOUT BUTTON)-->
+        <div id="authentication-bar" style="display: none">
           <p>
-            <span class="reading"><span id="aut"></span></span>
+            <span id="authentication-status">log in as:   </span>
+            <span id="user-details">USEREMAIL</span>
+            <a href="/" id="logout-link">(logout)</a>
           </p>
         </div>
+        
       </div>
     </div>
     <script src="scripts/auth.js"></script>
