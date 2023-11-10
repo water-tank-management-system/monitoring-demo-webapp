@@ -21,8 +21,8 @@ Capstone A9
 // ===== User-Defined Constant =====
 
 // Define Data Communication State
-#define ESP_TX D1
-#define ESP_RX D2
+#define ESP_TX 1
+#define ESP_RX 3
 #define RTDB_TX 200
 #define RTDB_RX 202
 
