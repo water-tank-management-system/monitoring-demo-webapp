@@ -24,7 +24,7 @@ void setup()
   Serial.begin(9600);
 
   // Baudrate for ESP - Arduino Communication
-  espSS.begin(9600);  
+  Serial.begin(9600);  
 
   // Initialize the timestamp
   timeClient.begin();
@@ -48,16 +48,16 @@ void loop()
   switch(state)    
   {
     case ESP_RX:
-      while (espSS.available() > 0)
+      while (Serial.available() > 0)
       {
-        dataIn = espSS.readStringUntil('\n');
+        dataIn = Serial.readStringUntil('\n');
         parsingData();
-        Serial.println("Data recieved");
-        Serial.println("temp = " + temp);
-        Serial.println("level = " + level);
-        Serial.println("turb = " + turb);
-        Serial.println("flow = " + flow);        
-        Serial.println("=====================");
+        // Serial.println("Data recieved");
+        // Serial.println("temp = " + temp);
+        // Serial.println("level = " + level);
+        // Serial.println("turb = " + turb);
+        // Serial.println("flow = " + flow);        
+        // Serial.println("=====================");
 
         state = RTDB_TX;
       }
@@ -104,11 +104,11 @@ void loop()
         cleaning_state_user = receiveInt(clnPath);
         fill_state_user = receiveInt(fllPath);
 
-        Serial.println("=========================");
-        Serial.print(" automation\t: ");     Serial.println(auto_mode);
-        Serial.print(" cleaning-state\t: "); Serial.println(cleaning_state_user);
-        Serial.print(" fill-state\t: ");     Serial.println(fill_state_user);
-        Serial.println("=========================\n");
+        // Serial.println("=========================");
+        // Serial.print(" automation\t: ");     Serial.println(auto_mode);
+        // Serial.print(" cleaning-state\t: "); Serial.println(cleaning_state_user);
+        // Serial.print(" fill-state\t: ");     Serial.println(fill_state_user);
+        // Serial.println("=========================\n");
 
         stateLED(500, 2);
       }      
@@ -118,18 +118,18 @@ void loop()
       break;
     
     case ESP_TX:
-      Serial.println("Data transmitted: ");
-      espSS.print(auto_mode); espSS.print("A");
-      Serial.println(auto_mode);
+      // Serial.println("Data transmitted: ");
+      Serial.print(auto_mode); Serial.print("A");
+      // Serial.println(auto_mode);
 
-      espSS.print(cleaning_state_user); espSS.print("B");
-      Serial.println(cleaning_state_user);
+      Serial.print(cleaning_state_user); Serial.print("B");
+      // Serial.println(cleaning_state_user);
 
-      espSS.print(fill_state_user); espSS.print("C");
-      Serial.println(fill_state_user);
+      Serial.print(fill_state_user); Serial.print("C");
+      // Serial.println(fill_state_user);
 
-      espSS.print("\n");
-      Serial.println("=====================");
+      Serial.print("\n");
+      // Serial.println("=====================");
       delay(1000);
 
       state = ESP_RX;
@@ -163,16 +163,16 @@ void initFirebase()
   Firebase.begin(&config, &auth);
 
   // Getting the user UID might take a few seconds
-  Serial.println("Getting User UID");
+  // Serial.println("Getting User UID");
   while ((auth.token.uid) == "")
   {
-    Serial.print('.');
+    // Serial.print('.');
     delay(1000);
   }
   // Print user UID
   uid = auth.token.uid.c_str();
-  Serial.print("User UID: ");
-  Serial.println(uid);
+  // Serial.print("User UID: ");
+  // Serial.println(uid);
 
   // Update database path
   databasePath = "/UsersData/" + uid;

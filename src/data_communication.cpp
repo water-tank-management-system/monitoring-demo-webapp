@@ -15,18 +15,18 @@ void sendFloat(String path, float value)
 {
   if (Firebase.RTDB.setFloat(&fbdo, path.c_str(), value))
   {
-    Serial.print("Writing value: ");
-    Serial.print(value);
-    Serial.print(" on the following path: ");
-    Serial.println(path);
-    Serial.println("PASSED");
-    Serial.println("PATH: " + fbdo.dataPath());
-    Serial.println("TYPE: " + fbdo.dataType());
+    // Serial.print("Writing value: ");
+    // Serial.print(value);
+    // Serial.print(" on the following path: ");
+    // Serial.println(path);
+    // Serial.println("PASSED");
+    // Serial.println("PATH: " + fbdo.dataPath());
+    // Serial.println("TYPE: " + fbdo.dataType());
   }
   else
   {
-    Serial.println("FAILED");
-    Serial.println("REASON: " + fbdo.errorReason());
+    // Serial.println("FAILED");
+    // Serial.println("REASON: " + fbdo.errorReason());
   }
 }
 
@@ -35,18 +35,18 @@ void sendInt(String path, int value)
 {
   if (Firebase.RTDB.setInt(&fbdo, path.c_str(), value))
   {
-    Serial.print("Writing value: ");
-    Serial.print(value);
-    Serial.print(" on the following path: ");
-    Serial.println(path);
-    Serial.println("PASSED");
-    Serial.println("PATH: " + fbdo.dataPath());
-    Serial.println("TYPE: " + fbdo.dataType());
+    // Serial.print("Writing value: ");
+    // Serial.print(value);
+    // Serial.print(" on the following path: ");
+    // Serial.println(path);
+    // Serial.println("PASSED");
+    // Serial.println("PATH: " + fbdo.dataPath());
+    // Serial.println("TYPE: " + fbdo.dataType());
   }
   else
   {
-    Serial.println("FAILED");
-    Serial.println("REASON: " + fbdo.errorReason());
+    // Serial.println("FAILED");
+    // Serial.println("REASON: " + fbdo.errorReason());
   }
 }
 
@@ -55,18 +55,18 @@ void sendBool(String path, bool value)
 {
   if (Firebase.RTDB.setBool(&fbdo, path.c_str(), value))
   {
-    Serial.print("Writing value: ");
-    Serial.print(value);
-    Serial.print(" on the following path: ");
-    Serial.println(path);
-    Serial.println("PASSED");
-    Serial.println("PATH: " + fbdo.dataPath());
-    Serial.println("TYPE: " + fbdo.dataType());
+    // Serial.print("Writing value: ");
+    // Serial.print(value);
+    // Serial.print(" on the following path: ");
+    // Serial.println(path);
+    // Serial.println("PASSED");
+    // Serial.println("PATH: " + fbdo.dataPath());
+    // Serial.println("TYPE: " + fbdo.dataType());
   }
   else
   {
-    Serial.println("FAILED");
-    Serial.println("REASON: " + fbdo.errorReason());
+    // Serial.println("FAILED");
+    // Serial.println("REASON: " + fbdo.errorReason());
   }
 }
 
@@ -75,8 +75,8 @@ void sendDataLog()
 {
   // Get current timestamp
   timestamp = getTime();
-  Serial.print("time: ");
-  Serial.println(timestamp);
+  // Serial.print("time: ");
+  // Serial.println(timestamp);
 
   parentPath = dataLogPath + "/" + String(timestamp);
 
@@ -86,7 +86,7 @@ void sendDataLog()
   json.set(turLog.c_str(), String(turbidity));
   json.set(timePath, String(timestamp));
 
-  Serial.printf("Set json... %s\n", Firebase.RTDB.setJSON(&fbdo, parentPath.c_str(), &json) ? "ok" : fbdo.errorReason().c_str());
+  // Serial.printf("Set json... %s\n", Firebase.RTDB.setJSON(&fbdo, parentPath.c_str(), &json) ? "ok" : fbdo.errorReason().c_str());
 }
 
 // Receive Boolean values from the database
@@ -103,7 +103,7 @@ bool receiveBool(String path)
   }
   else
   {
-    Serial.println(fbdo.errorReason());
+    // Serial.println(fbdo.errorReason());
   }
   return val;
 }
@@ -122,7 +122,7 @@ bool receiveInt(String path)
   }
   else
   {
-    Serial.println(fbdo.errorReason());
+    // Serial.println(fbdo.errorReason());
   }
   return val;
 }
