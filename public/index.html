@@ -228,10 +228,6 @@
           <div class="card">
             <canvas id="gauge-temperature"></canvas>
           </div>
-          <!--HUMIDITY-->
-          <div class="card">
-            <canvas id="gauge-humidity"></canvas>
-          </div>
         </div>
       </div>
 
@@ -241,6 +237,7 @@
         <div>
           <p>Number of readings: <input type="number" id="charts-range" /></p>
         </div>
+
         <!--TEMPERATURE-CHART-->
         <div class="cards">
           <div class="card">
@@ -249,25 +246,6 @@
               TEMPERATURE CHART
             </p>
             <div id="chart-temperature" class="chart-container"></div>
-          </div>
-        </div>
-        <!--HUMIDITY-CHART-->
-        <div class="cards">
-          <div class="card">
-            <p>
-              <i class="fas fa-tint" style="color: #00add6"></i> HUMIDITY CHART
-            </p>
-            <div id="chart-humidity" class="chart-container"></div>
-          </div>
-        </div>
-        <!--PRESSURE-CHART-->
-        <div class="cards">
-          <div class="card">
-            <p>
-              <i class="fas fa-angle-double-down" style="color: #e1e437"></i>
-              PRESSURE CHART
-            </p>
-            <div id="chart-pressure" class="chart-container"></div>
           </div>
         </div>
       </div>
@@ -281,6 +259,7 @@
         <!--Delete data button-->
         <button id="delete-button" class="deletebtn">Delete data</button>
       </p>
+
       <!--Modal to delete data-->
       <div id="delete-modal" class="modal" sytle="display:none">
         <span
@@ -341,13 +320,11 @@
           <a href="/" id="logout-link">(logout)</a>
         </p>
       </div>
-
     </div>
 
     <script src="scripts/auth.js"></script>
     <script src="scripts/charts-definition.js"></script>
     <script src="scripts/gauges-definition.js"></script>
     <script src="scripts/index.js"></script>
-
   </body>
 </html>
