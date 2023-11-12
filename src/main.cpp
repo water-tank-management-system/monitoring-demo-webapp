@@ -41,6 +41,8 @@ void setup()
 
   // Initialize the Firebase 
   initFirebase();
+
+  stateLED(500, 3);
 }
 
 void loop()
@@ -75,10 +77,10 @@ void loop()
         water_flow = flow.toFloat();
         turbidity = turb.toFloat();        
 
-        temperature = random(10, 40) + ((float)random(0, 100) / 100.0);
-        water_level = random(0, 60) + ((float)random(0, 100) / 100.0);
-        water_flow  = random(0, 60) + ((float)random(0, 100) / 100.0);
-        turbidity   = random(0, 30);        
+        // temperature = random(10, 40) + ((float)random(0, 100) / 100.0);
+        // water_level = random(0, 60) + ((float)random(0, 100) / 100.0);
+        // water_flow  = random(0, 60) + ((float)random(0, 100) / 100.0);
+        turbidity   = 5;
 
         // Send values to database:
         sendFloat(tmpPath, temperature);
@@ -130,7 +132,7 @@ void loop()
 
       Serial.print("\n");
       // Serial.println("=====================");
-      delay(1000);
+      // delay(1000);
 
       state = ESP_RX;
       break;
