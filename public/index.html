@@ -29,10 +29,13 @@
       const auth = firebase.auth();
       const db = firebase.database();
     </script>
+
     <!-- include highchartsjs to build the charts-->
     <script src="https://code.highcharts.com/highcharts.js"></script>
+
     <!-- include to use jquery-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
     <!--include icons from fontawesome-->
     <link
       rel="stylesheet"
@@ -40,10 +43,13 @@
       integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr"
       crossorigin="anonymous"
     />
+
     <!-- include Gauges Javascript library-->
     <script src="https://cdn.rawgit.com/Mikhus/canvas-gauges/gh-pages/download/2.1.7/all/gauge.min.js"></script>
-    <!--reference for favicon-->
+
+    <!--web icon-->
     <!-- <link rel="icon" type="image/png" href="favicon.png" /> -->
+
     <!--reference a stylesheet-->
     <link rel="stylesheet" type="text/css" href="style.css" />
   </head>
@@ -94,20 +100,20 @@
           name="cards-checkbox"
           checked
         />
-        Gauges:
-        <input
-          type="checkbox"
-          id="gauges-checkbox"
-          name="gauges-checkbox"
-          checked
-        />
         Charts:
         <input
           type="checkbox"
           id="charts-checkbox"
           name="charts-checkbox"
-          unchecked
+          checked
         />
+        Gauges:
+        <input
+          type="checkbox"
+          id="gauges-checkbox"
+          name="gauges-checkbox"
+          unchecked
+        />        
       </p>
 
       <div class="cards-div">
@@ -219,6 +225,7 @@
           <p> DIRTY WATER INDICATOR </p>
           <div class="indicator" id="dirty-water-indicator" ></div>
         </div> -->
+
         </div>
       </div>
 
