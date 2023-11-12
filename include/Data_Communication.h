@@ -30,6 +30,9 @@ void sendDataLog();
 // Receive Boolean values from the database
 bool receiveBool(String path);
 
+// Receive Int values from the database
+bool receiveInt(String path);
+
 // Parse the Data from master
 void parsingData();
 

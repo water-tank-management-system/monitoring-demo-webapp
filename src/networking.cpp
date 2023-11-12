@@ -19,8 +19,8 @@ FirebaseConfig config;
 // Define Firebase JSON objects
 FirebaseJson json;
 
-// Create Software Serial Object
-SoftwareSerial espSS(ESP_RX, ESP_TX);
+// Create Software // Serial Object
+// Software Serial espSS(ESP_RX, ESP_TX);
 
 // Define NTP Client to get time
 WiFiUDP ntpUDP;
@@ -31,14 +31,14 @@ NTPClient timeClient(ntpUDP, "pool.ntp.org");
 void initWiFi()
 {
   WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
-  Serial.print("Connecting to WiFi ..");
+  // Serial.print("Connecting to WiFi ..");
   while (WiFi.status() != WL_CONNECTED)
   {
-    Serial.print('.');
+    // Serial.print('.');
     delay(1000);
   }
-  Serial.println(WiFi.localIP());
-  Serial.println();
+  // Serial.println(WiFi.localIP());
+  // Serial.println();
 }
 
 // Function that gets current epoch time

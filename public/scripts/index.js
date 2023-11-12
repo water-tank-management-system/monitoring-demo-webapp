@@ -64,15 +64,15 @@ const setupUI = (user) => {
     dbRefTmp.on('value', (snap) => {
       tmpElement.innerText = snap.val().toFixed(2);
     });
-    
+
     dbRefLvl.on('value', (snap) => {
       lvlElement.innerText = snap.val().toFixed(2);
     });
-    
+
     dbRefFlw.on('value', (snap) => {
       flwElement.innerText = snap.val().toFixed(2);
     });
-    
+
     dbRefTur.on('value', (snap) => {
       turElement.innerText = snap.val().toFixed(2);
     });

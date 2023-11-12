@@ -23,9 +23,7 @@ String databasePath;
 String  tmpPath,
         lvlPath,
         flwPath,
-        turPath,
-        dirPath,
-        empPath,
+        turPath,        
         autPath,
         clnPath,
         fllPath;
@@ -48,9 +46,6 @@ float temperature = 0,
       water_level = 0,
       water_flow = 0;
 int   turbidity = 0;
-bool automation = false,
-     dirty_state = false,
-     empty_state = false;
 
 // User State Data Variables
 bool auto_mode = true,
@@ -58,28 +53,25 @@ bool auto_mode = true,
      fill_state_user = false;
 
 // Initial state
-int state = ESP_RX;
+// int state = ESP_RX;
+int state = RTDB_TX;
 
 // Data Transfer Variables
 String  dataIn,
         temp,
         level,
         turb,
-        flow,
-        dirty,
-        empty;
+        flow;        
 
 // Data Parsing Variables
 uint8_t indexOfA,
         indexOfB,
         indexOfC,
-        indexOfD,
-        indexOfE,
-        indexOfF;
+        indexOfD;        
 
 // Timer variables
 unsigned long sendDataPrevMillis = 0,
-              timerDelay = 20000, // send new readings every minute
+              timerDelay = 20000, // send new readings every timerDelay
               prev = 0;
 
 
