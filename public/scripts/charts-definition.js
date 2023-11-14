@@ -3,8 +3,9 @@ window.addEventListener('load', onload);
 
 function onload(event) {
   chartT = createTemperatureChart();
-  chartH = createHumidityChart();
-  chartP = createPressureChart();
+  chartL = createWaterLevelChart();
+  chartF = createWaterFlowChart();
+  chartN = createTurbidityChart();
 }
 
 // Create Temperature Chart
@@ -16,7 +17,7 @@ function createTemperatureChart() {
     },
     series: [
       {
-        name: 'BME280',
+        name: 'Temperature - NTC Sensor',
       },
     ],
     title: {
