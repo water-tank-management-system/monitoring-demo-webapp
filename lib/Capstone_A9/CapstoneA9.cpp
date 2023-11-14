@@ -48,13 +48,12 @@ float temperature = 0,
 int   turbidity = 0;
 
 // User State Data Variables
-bool auto_mode = true,
-     cleaning_state_user = false,
-     fill_state_user = false;
+int auto_mode = 0,
+    cleaning_state_user = 0,
+    fill_state_user = 0;
 
 // Initial state
-// int state = ESP_RX;
-int state = RTDB_TX;
+int state = ESP_RX;
 
 // Data Transfer Variables
 String  dataIn,
@@ -71,7 +70,7 @@ uint8_t indexOfA,
 
 // Timer variables
 unsigned long sendDataPrevMillis = 0,
-              timerDelay = 20000, // send new readings every timerDelay
+              timerDelay = 100, // send new readings every timerDelay
               prev = 0;
 
 

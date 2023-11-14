@@ -66,12 +66,12 @@ extern float  temperature,
               water_level,
               water_flow;
 extern int turbidity;
-extern bool automation,
+extern int  automation,
             dirty_state,
             empty_state;
 
 // User State Data Variables
-extern bool auto_mode,
+extern int  auto_mode,
             cleaning_state_user,
             fill_state_user;
 
