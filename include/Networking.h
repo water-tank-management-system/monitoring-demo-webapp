@@ -16,8 +16,8 @@ Related to Networking
 // ===== User-Defined Constant =====
 
 // Insert your network credentials
-#define WIFI_SSID "Muafi"
-#define WIFI_PASSWORD "pwnya11ya"
+#define WIFI_SSID "CAPSTONE_A9_NETWORK"
+#define WIFI_PASSWORD "nilaicapstonea"
 
 // Insert Firebase project API Key
 #define API_KEY "AIzaSyCCac6HO8_6z6UloSV_YNJwGE-iJjIlrQM"

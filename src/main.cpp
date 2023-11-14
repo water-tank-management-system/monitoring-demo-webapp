@@ -24,7 +24,7 @@ void setup()
   Serial.begin(9600);
 
   // Baudrate for ESP - Arduino Communication
-  Serial.begin(9600);  
+  espSS.begin(9600);  
 
   // Initialize the timestamp
   timeClient.begin();
@@ -43,6 +43,7 @@ void setup()
   initFirebase();
 
   stateLED(500, 3);
+  digitalWrite(BUILTIN_LED, LOW);
 }
 
 void loop()
@@ -54,12 +55,15 @@ void loop()
       {
         dataIn = Serial.readStringUntil('\n');
         parsingData();
+
+        /*        
         // Serial.println("Data recieved");
         // Serial.println("temp = " + temp);
         // Serial.println("level = " + level);
         // Serial.println("turb = " + turb);
         // Serial.println("flow = " + flow);        
         // Serial.println("=====================");
+        */
 
         state = RTDB_TX;
       }
@@ -68,6 +72,26 @@ void loop()
     
     case RTDB_TX:
       // Send new readings to database
+      temperature = temp.toFloat();
+      water_level = level.toFloat();
+      water_flow = flow.toFloat();
+      turbidity = turb.toFloat();
+
+      /*
+      // temperature = random(10, 40) + ((float)random(0, 100) / 100.0);
+      // water_level = random(0, 60) + ((float)random(0, 100) / 100.0);
+      // water_flow  = random(0, 60) + ((float)random(0, 100) / 100.0);
+      // turbidity = 5;
+      */
+
+      // Send values to database:
+      sendFloat(tmpPath, temperature);
+      sendFloat(lvlPath, water_level);
+      sendFloat(flwPath, water_flow);
+      sendInt(turPath, turbidity);
+      sendDataLog();
+
+      /*
       if (Firebase.ready() && (millis() - sendDataPrevMillis > timerDelay || sendDataPrevMillis == 0))
       {
         sendDataPrevMillis = millis();
@@ -75,11 +99,13 @@ void loop()
         temperature = temp.toFloat();
         water_level = level.toFloat();
         water_flow = flow.toFloat();
-        turbidity = turb.toFloat();        
+        turbidity = turb.toFloat();
 
+        
         // temperature = random(10, 40) + ((float)random(0, 100) / 100.0);
         // water_level = random(0, 60) + ((float)random(0, 100) / 100.0);
         // water_flow  = random(0, 60) + ((float)random(0, 100) / 100.0);
+        
         turbidity   = 5;
 
         // Send values to database:
@@ -89,14 +115,23 @@ void loop()
         sendInt(turPath, turbidity);  
         sendDataLog();
 
-        stateLED(500, 2);
+        // stateLED(500, 2);
       }
+      */
       
       state = RTDB_RX;
       break;
     
     case RTDB_RX:
       // Receive data from database
+      sendDataPrevMillis = millis();
+
+      // Receive values from database:
+      auto_mode = receiveInt(autPath);
+      cleaning_state_user = receiveInt(clnPath);
+      fill_state_user = receiveInt(fllPath);
+
+      /*
       if (Firebase.ready() && (millis() - sendDataPrevMillis > timerDelay || sendDataPrevMillis == 0))
       {
         sendDataPrevMillis = millis();
@@ -106,33 +141,37 @@ void loop()
         cleaning_state_user = receiveInt(clnPath);
         fill_state_user = receiveInt(fllPath);
 
+        
         // Serial.println("=========================");
         // Serial.print(" automation\t: ");     Serial.println(auto_mode);
         // Serial.print(" cleaning-state\t: "); Serial.println(cleaning_state_user);
         // Serial.print(" fill-state\t: ");     Serial.println(fill_state_user);
         // Serial.println("=========================\n");
+        
 
-        stateLED(500, 2);
+        // stateLED(500, 2);
       }      
+      */
 
-      // state = ESP_TX;
-      state = RTDB_TX;
+      state = ESP_TX;
       break;
     
     case ESP_TX:
       // Serial.println("Data transmitted: ");
+
       Serial.print(auto_mode); Serial.print("A");
-      // Serial.println(auto_mode);
-
       Serial.print(cleaning_state_user); Serial.print("B");
-      // Serial.println(cleaning_state_user);
-
       Serial.print(fill_state_user); Serial.print("C");
+      Serial.print("\n");
+
+      /*
+      // Serial.println(auto_mode);
+      // Serial.println(cleaning_state_user);
       // Serial.println(fill_state_user);
 
-      Serial.print("\n");
       // Serial.println("=====================");
       // delay(1000);
+      */
 
       state = ESP_RX;
       break;
@@ -168,11 +207,12 @@ void initFirebase()
   // Serial.println("Getting User UID");
   while ((auth.token.uid) == "")
   {
-    // Serial.print('.');
+    digitalWrite(LED_BUILTIN, HIGH);
     delay(1000);
   }
   // Print user UID
   uid = auth.token.uid.c_str();
+
   // Serial.print("User UID: ");
   // Serial.println(uid);
 
@@ -191,7 +231,7 @@ void initFirebase()
   clnPath = databasePath + "/cleaning-state"; // --> UsersData/<user_uid>/cleaning-state
   fllPath = databasePath + "/filling-state";  // --> UsersData/<user_uid>/filling-state
 
-  sendInt(autPath, 1);
+  sendInt(autPath, 0);
   sendInt(clnPath, 0);
   sendInt(fllPath, 0);
 }
