@@ -32,10 +32,8 @@
 
     <!-- include highchartsjs to build the charts-->
     <script src="https://code.highcharts.com/highcharts.js"></script>
-
     <!-- include to use jquery-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
     <!--include icons from fontawesome-->
     <link
       rel="stylesheet"
@@ -43,13 +41,10 @@
       integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr"
       crossorigin="anonymous"
     />
-
     <!-- include Gauges Javascript library-->
     <script src="https://cdn.rawgit.com/Mikhus/canvas-gauges/gh-pages/download/2.1.7/all/gauge.min.js"></script>
-
-    <!--web icon-->
-    <!-- <link rel="icon" type="image/png" href="favicon.png" /> -->
-
+    <!--reference for favicon-->
+    <!-- <link rel="icon" type="image/png" href="favicon.png"> -->
     <!--reference a stylesheet-->
     <link rel="stylesheet" type="text/css" href="style.css" />
   </head>
@@ -58,6 +53,15 @@
     <!--TOP BAR-->
     <div class="topnav">
       <h1>Water Tank Monitoring <i class="fas fa-clipboard-list"></i></h1>
+    </div>
+
+    <!--AUTHENTICATION BAR (USER DETAILS/LOGOUT BUTTON)-->
+    <div id="authentication-bar" style="display: none">
+      <p>
+        <span id="authentication-status">User logged in</span>
+        <span id="user-details">USEREMAIL</span>
+        <a href="/" id="logout-link">(logout)</a>
+      </p>
     </div>
 
     <!--LOGIN FORM-->
@@ -116,116 +120,35 @@
         />        
       </p>
 
-      <div class="cards-div">
+      <div id="cards-div">
         <div class="cards">
-          <!-- TEMPERATURE -->
+          <!--TEMPERATURE-->
           <div class="card">
             <p>
               <i class="fas fa-thermometer-half" style="color: #059e8a"></i>
               TEMPERATURE
             </p>
             <p>
-              <span class="reading"><span id="tmp"></span> &deg;C</span>
+              <span class="reading"><span id="temp"></span> &deg;C</span>
             </p>
           </div>
-
-          <!-- WATER LEVEL -->
+          <!--HUMIDITY-->
           <div class="card">
-            <p>VOLUME</p>
+            <p><i class="fas fa-tint" style="color: #00add6"></i> HUMIDITY</p>
             <p>
-              <span class="reading"><span id="lvl"></span> % </span>
+              <span class="reading"><span id="hum"></span> &percnt;</span>
             </p>
           </div>
-
-          <!-- WATER FLOW -->
+          <!--PRESSURE-->
           <div class="card">
-            <p>WATER FLOW</p>
             <p>
-              <span class="reading"><span id="flw"></span> L/min </span>
+              <i class="fas fa-angle-double-down" style="color: #e1e437"></i>
+              PRESSURE
             </p>
-          </div>
-
-          <!-- TURBIDITY -->
-          <div class="card">
-            <p>TURBIDITY</p>
             <p>
-              <span class="reading"><span id="tur"></span> NTU </span>
+              <span class="reading"><span id="pres"></span> hPa</span>
             </p>
           </div>
-        </div>
-
-        <div class="cards">
-          <!-- AUTOMATION -->
-          <div class="card">
-            <p>AUTOMATION</p>
-
-            <div class="progress">
-              <div class="toggle-btn" id="unact">
-                <div class="inner-circle"></div>
-              </div>
-
-              <div class="toggle-btn active" id="act">
-                <div class="inner-circle"></div>
-              </div>
-            </div>
-          </div>
-
-          <!-- CLEANING STATE -->
-          <div class="card">
-            <p>CLEANING STATE</p>
-
-            <div class="progress">
-              <div class="toggle-btn" id="uncln">
-                <div class="inner-circle"></div>
-              </div>
-
-              <div class="toggle-btn active" id="cln">
-                <div class="inner-circle"></div>
-              </div>
-            </div>
-          </div>
-
-          <!-- FILLING STATE -->
-          <div class="card">
-            <p>FILLING STATE</p>
-
-            <div class="progress">
-              <div class="toggle-btn" id="unfil">
-                <div class="inner-circle"></div>
-              </div>
-
-              <div class="toggle-btn active" id="fil">
-                <div class="inner-circle"></div>
-              </div>
-            </div>
-          </div>
-
-          <!-- INDICATOR -->
-          <div class="card">
-            <p>INDICATOR</p>
-            <div class="indicators-container">
-              <!-- INDICATOR FOR WATER LEVEL -->
-              <div class="indicator-wrapper">
-                <p>EMPTY</p>
-                <div id="water-level-indicator" class="indicator"></div>
-              </div>
-
-              <!-- INDICATOR FOR TURBIDITY -->
-              <div class="indicator-wrapper">
-                <p>DIRTY</p>
-                <div id="dirty-water-indicator" class="indicator"></div>
-              </div>
-            </div>
-          </div>
-
-          <!-- <div class="card">
-          <p> WATER LEVEL INDICATOR </p>
-          <div class="indicator" id="water-level-indicator" ></div>
-
-          <p> DIRTY WATER INDICATOR </p>
-          <div class="indicator" id="dirty-water-indicator" ></div>
-        </div> -->
-
         </div>
       </div>      
 
@@ -235,7 +158,6 @@
         <div>
           <p>Number of readings: <input type="number" id="charts-range" /></p>
         </div>
-
         <!--TEMPERATURE-CHART-->
         <div class="cards">
           <div class="card">
@@ -246,13 +168,37 @@
             <div id="chart-temperature" class="chart-container"></div>
           </div>
         </div>
+        <!--HUMIDITY-CHART-->
+        <div class="cards">
+          <div class="card">
+            <p>
+              <i class="fas fa-tint" style="color: #00add6"></i> HUMIDITY CHART
+            </p>
+            <div id="chart-humidity" class="chart-container"></div>
+          </div>
+        </div>
+        <!--PRESSURE-CHART-->
+        <div class="cards">
+          <div class="card">
+            <p>
+              <i class="fas fa-angle-double-down" style="color: #e1e437"></i>
+              PRESSURE CHART
+            </p>
+            <div id="chart-pressure" class="chart-container"></div>
+          </div>
+        </div>
       </div>
 
+      <!--GAUGES-->
       <div id="gauges-div">
         <div class="cards">
           <!--TEMPERATURE-->
           <div class="card">
             <canvas id="gauge-temperature"></canvas>
+          </div>
+          <!--HUMIDITY-->
+          <div class="card">
+            <canvas id="gauge-humidity"></canvas>
           </div>
         </div>
       </div>
@@ -266,7 +212,6 @@
         <!--Delete data button-->
         <button id="delete-button" class="deletebtn">Delete data</button>
       </p>
-
       <!--Modal to delete data-->
       <div id="delete-modal" class="modal" sytle="display:none">
         <span
@@ -318,20 +263,12 @@
           </p>
         </div>
       </div>
-
-      <!--AUTHENTICATION BAR (USER DETAILS/LOGOUT BUTTON)-->
-      <div id="authentication-bar" style="display: none">
-        <p>
-          <span id="authentication-status">log in as: </span>
-          <span id="user-details">USEREMAIL</span>
-          <a href="/" id="logout-link">(logout)</a>
-        </p>
-      </div>
     </div>
 
+    <!--INCLUDE JS FILES-->
     <script src="scripts/auth.js"></script>
-    <script src="scripts/charts-definition.js"></script>
-    <script src="scripts/gauges-definition.js"></script>
+    <script src="scripts/charts.js"></script>
+    <script src="scripts/gauges.js"></script>
     <script src="scripts/index.js"></script>
   </body>
 </html>
