@@ -92,8 +92,9 @@ void loop()
       sendFloat(flwPath, water_flow);
       sendInt(turPath, turbidity);
 
-      unsigned long currentMillis = millis(); // grab current time
-      if ((unsigned long)(currentMillis - previousMillis) >= interval)
+      sendDataLog();
+      
+      if ((millis() - previousMillis) >= interval)
       {
         sendDataLog();
         stateLED(500, 1);
