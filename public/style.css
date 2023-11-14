@@ -44,9 +44,9 @@ body {
 
 .cards {  
   max-width: 800px;
-  margin: auto;
+  margin: 0 auto;
   margin-top: 2rem;
-  margin-bottom: 2rem;
+  margin-bottom: 3rem;
   display: grid;
   grid-gap: 2rem;
   grid-template-columns: repeat(auto-fit, minmax(200px, 2fr));
@@ -121,6 +121,11 @@ body {
   color: #193036;
 }
 
+.date-time {
+  font-size: 0.8rem;
+  color: #1282A2;
+}
+
 button {
   background-color: skyblue;
   color: white;
@@ -133,6 +138,10 @@ button {
 
 button:hover {
   opacity: 0.8;
+}
+
+.deletebtn {
+  background-color: #c52c2c;
 }
 
 .form-elements-container {
@@ -149,15 +158,6 @@ input[type=password] {
   display: inline-block;
   border: 1px solid #ccc;
   box-sizing: border-box;
-}
-
-.date-time {
-  font-size: 0.8rem;
-  color: #1282A2;
-}
-
-.deletebtn {
-  background-color: #c52c2c;
 }
 
 table {
