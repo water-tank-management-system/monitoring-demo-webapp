@@ -194,7 +194,7 @@ const setupUI = (user) => {
         clnStatus = 1;
       }
       // Turn off the toggle after x seconds (x000 milliseconds)
-      setTimeout(turnOffCleaningToggle, 5000);
+      // setTimeout(turnOffCleaningToggle, 5000);
     };
 
     // Function to turn off the cleaning toggle
@@ -240,7 +240,7 @@ const setupUI = (user) => {
       }
 
       // Turn off the toggle after x seconds (x000 milliseconds)
-      setTimeout(turnOffFillingToggle, 5000);
+      // setTimeout(turnOffFillingToggle, 5000);
     };
 
     // Function to turn off the cleaning toggle
@@ -319,7 +319,7 @@ const setupUI = (user) => {
 
     // CHARTS
     // Number of Readings to plot on charts
-    var chartRange = 0;
+    var chartRange = 10;
     // Get number of readings to plot saved on database (runs when the page first loads and whenever there's a change in the database)
     chartRef.on('value', (snapshot) => {
       chartRange = Number(snapshot.val());
@@ -346,8 +346,8 @@ const setupUI = (user) => {
           var jsonData = snapshot.toJSON(); // example: {temperature: 25.02, humidity: 50.20, pressure: 1008.48, timestamp:1641317355}
           // Save values on variables
           var temperature = jsonData.temperature;
-          var waterFlow = jsonData.water-flow;
-          var waterLevel = jsonData.water-level;
+          var waterFlow = jsonData["water-flow"];
+          var waterLevel = jsonData['water-level'];
           var turb = jsonData.turbidity;
           var timestamp = jsonData.timestamp;
 
@@ -371,7 +371,7 @@ const setupUI = (user) => {
       .on('child_added', (snapshot) => {
         var jsonData = snapshot.toJSON(); // example: {temperature: 25.02, humidity: 50.20, pressure: 1008.48, timestamp:1641317355}
         var temperature = jsonData.temperature;
-        var waterLevel = jsonData.water - level;
+        var waterLevel = jsonData["water-level"];
         var turb = jsonData.turbidity;
         var timestamp = jsonData.timestamp;
 
@@ -421,8 +421,8 @@ const setupUI = (user) => {
             console.log(jsonData);
 
             var temperature = jsonData.temperature;
-            var waterFlow = jsonData.water - flow;
-            var waterLevel = jsonData.water - level;
+            var waterFlow = jsonData['water-flow'];
+            var waterLevel = jsonData['water-level'];
             var turb = jsonData.turbidity;
             var timestamp = jsonData.timestamp;
             var content = '';

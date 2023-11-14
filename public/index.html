@@ -107,14 +107,14 @@
           type="checkbox"
           id="gauges-checkbox"
           name="gauges-checkbox"
-          unchecked
+          checked
         />
         Charts:
         <input
           type="checkbox"
           id="charts-checkbox"
           name="charts-checkbox"
-          checked
+          unchecked
         />        
       </p>
 
@@ -234,16 +234,18 @@
       <!--GAUGES-->
       <div id="gauges-div">
         <div class="cards">
-
-          <!--TEMPERATURE-->
-          <div class="card">
-            <canvas id="gauge-temperature"></canvas>
-          </div>
-          
           <!--WATER LEVEL-->
           <div class="card">
             <canvas id="gauge-water-level"></canvas>
           </div>
+        </div>
+
+        <div class="cards">
+
+          <!--TEMPERATURE-->
+          <div class="card">
+            <canvas id="gauge-temperature"></canvas>
+          </div>                  
           
           <!--TURBIDITY-->
           <div class="card">
