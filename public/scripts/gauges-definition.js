@@ -21,7 +21,7 @@ function createTemperatureGauge() {
       {
         from: 30,
         to: 40,
-        color: 'rgba(200, 50, 50, .75)',
+        color: 'red',
       },
     ],
     colorPlate: '#fff',
@@ -61,7 +61,7 @@ function createWaterLevelGauge() {
       {
         from: 0,
         to: 25,
-        color: '#03C0C1',
+        color: 'red',
       },
     ],
     colorPlate: '#fff',

@@ -114,17 +114,18 @@ const setupUI = (user) => {
     // CARDS
 
     // Switch on/off
-    var autStatus;
-    var clnStatus;
-    var filStatus;
+    var autStatus, clnStatus, filStatus;
+    var tmpVal, lvlVal, turVal;
 
     // Update page with new readings
     dbRefTmp.on('value', (snap) => {
-      tmpElement.innerText = snap.val().toFixed(2);
+      tmpVal = snap.val().toFixed(2);
+      tmpElement.innerText = tmpVal;
     });
 
     dbRefLvl.on('value', (snap) => {
-      lvlElement.innerText = snap.val().toFixed(2);
+      lvlVal = snap.val().toFixed(2);
+      lvlElement.innerText = lvlVal;
     });
 
     dbRefFlw.on('value', (snap) => {
@@ -132,7 +133,8 @@ const setupUI = (user) => {
     });
 
     dbRefTur.on('value', (snap) => {
-      turElement.innerText = snap.val().toFixed(2);
+      turVal = snap.val().toFixed(2);
+      turElement.innerText = turVal;
     });
 
     // Automation state
@@ -384,9 +386,9 @@ const setupUI = (user) => {
         gaugeL.draw();
         gaugeN.draw();
 
-        gaugeT.value = temperature;
-        gaugeL.value = waterLevel;
-        gaugeN.value = turb;
+        gaugeT.value = tmpVal;
+        gaugeL.value = lvlVal;
+        gaugeN.value = turVal;
 
         updateElement.innerHTML = epochToDateTime(timestamp);
       });
