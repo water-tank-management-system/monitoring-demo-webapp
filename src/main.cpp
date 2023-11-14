@@ -18,6 +18,9 @@ Firebase Project
 
 // ===== Let's Go! =====
 
+unsigned long interval = 1000;    // the time we need to wait
+unsigned long previousMillis = 0; // millis() returns an unsigned long.
+
 void setup()
 {
   // Baudrate for ESP-PC Communication
@@ -32,9 +35,9 @@ void setup()
   // init Random seed for random number
   randomSeed(analogRead(0));
 
-  // BUILTIN_LED initialize
-  pinMode(BUILTIN_LED, OUTPUT);
-  digitalWrite(BUILTIN_LED, LOW);
+  // LED_BUILTIN initialize
+  pinMode(LED_BUILTIN, OUTPUT);
+  digitalWrite(LED_BUILTIN, LOW);
 
   // Initialize the WiFi Connection
   initWiFi();
@@ -42,12 +45,11 @@ void setup()
   // Initialize the Firebase 
   initFirebase();
 
-  stateLED(500, 3);
-  digitalWrite(BUILTIN_LED, LOW);
+  stateLED(500, 3);  
 }
 
 void loop()
-{
+{ 
   switch(state)    
   {
     case ESP_RX:
@@ -89,7 +91,14 @@ void loop()
       sendFloat(lvlPath, water_level);
       sendFloat(flwPath, water_flow);
       sendInt(turPath, turbidity);
-      sendDataLog();
+
+      unsigned long currentMillis = millis(); // grab current time
+      if ((unsigned long)(currentMillis - previousMillis) >= interval)
+      {
+        sendDataLog();
+        stateLED(500, 1);
+        previousMillis = millis();
+      }
 
       /*
       if (Firebase.ready() && (millis() - sendDataPrevMillis > timerDelay || sendDataPrevMillis == 0))
@@ -206,8 +215,7 @@ void initFirebase()
   // Getting the user UID might take a few seconds
   // Serial.println("Getting User UID");
   while ((auth.token.uid) == "")
-  {
-    digitalWrite(LED_BUILTIN, HIGH);
+  {    
     delay(1000);
   }
   // Print user UID

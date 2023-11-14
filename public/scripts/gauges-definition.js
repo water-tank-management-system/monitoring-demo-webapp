@@ -97,14 +97,14 @@ function createTurbidityGauge() {
     colorValueBoxBackground: '#f1fbfc',
     valueDec: 2,
     valueInt: 2,
-    majorTicks: ['0', '5', '10', '15', '20', '25', '30', '35', '40'],
+    majorTicks: ['0', '100', '200', '300', '400', '500', '600', '700', '800', '900', '1000'],
     minorTicks: 4,
     strokeTicks: true,
     highlights: [
       {
         from: 30,
         to: 1000,
-        color: 'rgba(200, 50, 50, .75)',
+        color: 'red',
       },
     ],
     colorPlate: '#fff',

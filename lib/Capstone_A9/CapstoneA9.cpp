@@ -81,9 +81,9 @@ void stateLED(const long interval, int period)
 {
   for (int i = 0; i <= period; i++)
   {
-    digitalWrite(BUILTIN_LED, HIGH);
+    digitalWrite(LED_BUILTIN, HIGH);
     delay(interval);
-    digitalWrite(BUILTIN_LED, LOW);
+    digitalWrite(LED_BUILTIN, LOW);
     delay(interval);
   }
 }
