@@ -64,7 +64,6 @@ const filElementActive = document.getElementById('fil');
 const cardsReadingsElement = document.querySelector('#cards-div');
 const gaugesReadingsElement = document.querySelector('#gauges-div');
 const chartsDivElement = document.querySelector('#charts-div');
-const presElement = document.getElementById('pres');
 const updateElement = document.getElementById('lastUpdate');
 
 // Indicator elements
@@ -110,7 +109,121 @@ const setupUI = (user) => {
     var dbRefFil = firebase.database().ref().child(dbPathFil);
     var dbRefLog = firebase.database().ref(dbPathLog);
     var chartRef = firebase.database().ref(chartPath);
-    
+
+    // CHECKBOXES
+    // Checbox (cards for sensor readings)
+    cardsCheckboxElement.addEventListener('change', (e) => {
+      if (cardsCheckboxElement.checked) {
+        cardsReadingsElement.style.display = 'block';
+      } else {
+        cardsReadingsElement.style.display = 'none';
+      }
+    });
+    // Checbox (gauges for sensor readings)
+    gaugesCheckboxElement.addEventListener('change', (e) => {
+      if (gaugesCheckboxElement.checked) {
+        gaugesReadingsElement.style.display = 'block';
+      } else {
+        gaugesReadingsElement.style.display = 'none';
+      }
+    });
+    // Checbox (charta for sensor readings)
+    chartsCheckboxElement.addEventListener('change', (e) => {
+      if (chartsCheckboxElement.checked) {
+        chartsDivElement.style.display = 'block';
+      } else {
+        chartsDivElement.style.display = 'none';
+      }
+    });
+
+    // CHARTS
+    // Number of Readings to plot on charts
+    var chartRange = 0;
+    // Get number of readings to plot saved on database (runs when the page first loads and whenever there's a change in the database)
+    chartRef.on('value', (snapshot) => {
+      chartRange = Number(snapshot.val());
+      console.log(chartRange);
+
+      // Delete all data from charts to update with new values when a new range is selected
+      chartT.destroy();
+      chartL.destroy();
+      chartF.destroy();
+      chartN.destroy();
+
+      // Render new charts to display new range of data
+      chartT = createTemperatureChart();
+      chartL = createWaterLevelChart();
+      chartF = createWaterFlowChart();
+      chartN = createTurbidityChart();
+
+      // Update the charts with the new range
+      // Get the latest readings and plot them on charts (the number of plotted readings corresponds to the chartRange value)
+      dbRefLog
+        .orderByKey()
+        .limitToLast(chartRange)
+        .on('child_added', (snapshot) => {
+          var jsonData = snapshot.toJSON(); // example: {temperature: 25.02, humidity: 50.20, pressure: 1008.48, timestamp:1641317355}
+          // Save values on variables
+          var temperature = jsonData.temperature;
+          var waterFlow = jsonData.water - flow;
+          var waterLevel = jsonData.water - level;
+          var turb = jsonData.turbidity;
+          var timestamp = jsonData.timestamp;
+
+          // Plot the values on the charts
+          plotValues(chartT, timestamp, temperature);
+          plotValues(chartL, timestamp, waterFlow);
+          plotValues(chartF, timestamp, waterLevel);
+          plotValues(chartN, timestamp, turb);
+        });
+    });
+
+    // Update database with new range (input field)
+    chartsRangeInputElement.onchange = () => {
+      chartRef.set(chartsRangeInputElement.value);
+    };
+
+    // GAUGES
+    dbRefLog
+      .orderByKey()
+      .limitToLast(1)
+      .on('child_added', (snapshot) => {
+        var jsonData = snapshot.toJSON(); // example: {temperature: 25.02, humidity: 50.20, pressure: 1008.48, timestamp:1641317355}
+        var temperature = jsonData.temperature;
+        var waterLevel = jsonData.water - level;
+        var turb = jsonData.turbidity;
+        var timestamp = jsonData.timestamp;
+
+        // Update DOM elements
+        var gaugeT = createTemperatureGauge();
+        var gaugeL = createWaterLevelGauge();
+        var gaugeN = createTurbidityGauge();
+
+        gaugeT.draw();
+        gaugeL.draw();
+        gaugeN.draw();
+
+        gaugeT.value = temperature;
+        gaugeL.value = waterLevel;
+        gaugeN.value = turb;
+
+        updateElement.innerHTML = epochToDateTime(timestamp);
+      });
+
+    // DELETE DATA
+    // Add event listener to open modal when click on "Delete Data" button
+    deleteButtonElement.addEventListener('click', (e) => {
+      console.log('Remove data');
+      e.preventDefault;
+      deleteModalElement.style.display = 'block';
+    });
+
+    // Add event listener when delete form is submited
+    deleteDataFormElement.addEventListener('submit', (e) => {
+      // delete data (readings)
+      dbRefLog.remove();
+    });
+
     // Switch on/off
     var autStatus;
     var clnStatus;
