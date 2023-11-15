@@ -64,6 +64,7 @@ void loop()
         state = RTDB_TX;
       }
       
+      delay(50);
       break;
     
     case RTDB_TX:
@@ -86,16 +87,7 @@ void loop()
       sendInt(flwPath, water_flow);
       sendInt(turPath, turbidity);
 
-      // sendDataLog();
-      
-      /*
-      if ((millis() - previousMillis) >= interval)
-      {
-        sendDataLog();
-        stateLED(500, 1);
-        previousMillis = millis();
-      }
-      */
+      sendDataLog();                        
 
       /*
       if (Firebase.ready() && (millis() - sendDataPrevMillis > timerDelay || sendDataPrevMillis == 0))
@@ -126,6 +118,7 @@ void loop()
       */
       
       state = RTDB_RX;
+      delay(50);
       break;
     
     case RTDB_RX:
@@ -160,6 +153,7 @@ void loop()
       */
 
       state = ESP_TX;
+      delay(50);
       break;
     
     case ESP_TX:
@@ -180,6 +174,7 @@ void loop()
       */
 
       state = ESP_RX;
+      delay(50);
       break;
   }
 }
