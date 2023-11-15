@@ -40,8 +40,10 @@ extern FirebaseConfig config;
 // Define Firebase JSON objects
 extern FirebaseJson json;
 
+/*
 // Create Software Serial Object
 extern SoftwareSerial espSS;
+*/
 
 // Define NTP Client to get time
 extern WiFiUDP ntpUDP;
