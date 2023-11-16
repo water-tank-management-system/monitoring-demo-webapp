@@ -33,6 +33,18 @@ function plotValues(chart, timestamp, value) {
   }
 }
 
+// Service worker
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/public/firebase-messaging-sw.js', { scope: '/public/' })
+    .then((registration) => {
+      console.log('Service Worker registered with scope:', registration.scope);
+    })
+    .catch((error) => {
+      console.error('Service Worker registration failed:', error);
+    });
+}
+
+
 // DOM elements
 const loginElement = document.querySelector('#login-form');
 const contentElement = document.querySelector('#content-sign-in');
@@ -195,15 +207,9 @@ const setupUI = (user) => {
         dbRefCln.set(1);
         clnStatus = 1;
       }
-      // Turn off the toggle after x seconds (x000 milliseconds)
-      // setTimeout(turnOffCleaningToggle, 5000);
+
     };
 
-    // Function to turn off the cleaning toggle
-    const turnOffCleaningToggle = () => {
-      dbRefCln.set(0);
-      clnStatus = 0;
-    };
 
     if (clnElement) clnElement.addEventListener('click', setClean);
 
@@ -241,14 +247,6 @@ const setupUI = (user) => {
         filStatus = 1;
       }
 
-      // Turn off the toggle after x seconds (x000 milliseconds)
-      // setTimeout(turnOffFillingToggle, 5000);
-    };
-
-    // Function to turn off the cleaning toggle
-    const turnOffFillingToggle = () => {
-      dbRefFil.set(0);
-      filStatus = 0;
     };
 
     if (filElement) filElement.addEventListener('click', setFill);

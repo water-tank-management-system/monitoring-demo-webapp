@@ -9,6 +9,10 @@
 
     <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.14.6/firebase-messaging.js"></script>
+
+    <!-- <script type="module" src="/public/firebase-messaging-sw.js"></script> -->
+
 
     <script>
       const firebaseConfig = {
@@ -28,6 +32,50 @@
       // Make auth and database references
       const auth = firebase.auth();
       const db = firebase.database();
+      const messaging=firebase.messaging();
+      function IntitalizeFireBaseMessaging() {
+        messaging
+            .requestPermission()
+            .then(function () {
+                console.log("Notification Permission");
+                return messaging.getToken(messaging, {vapidKey: "BM7APOV4HqluucI0XqMnUvCTSIKga9Jv6wjngXcSGqswvaNOrqnGoRwVwYj6htCVXzz8JeX2UkTzeBcYFzjlZM8"});
+            })
+            .then(function (token) {
+                console.log("Token : "+token);
+            })
+            .catch(function (reason) {
+                console.log(reason);
+            });
+    }
+
+    messaging.onMessage(function (payload) {
+        console.log(payload);
+        const notificationOption={
+            body:payload.notification.body,
+            icon:payload.notification.icon
+        };
+
+        if(Notification.permission==="granted"){
+            var notification=new Notification(payload.notification.title,notificationOption);
+
+            notification.onclick=function (ev) {
+                ev.preventDefault();
+                window.open(payload.notification.click_action,'_blank');
+                notification.close();
+            }
+        }
+
+    });
+    messaging.onTokenRefresh(function () {
+        messaging.getToken()
+            .then(function (newtoken) {
+                console.log("New Token : "+ newtoken);
+            })
+            .catch(function (reason) {
+                console.log(reason);
+            })
+    })
+    IntitalizeFireBaseMessaging();
     </script>
 
     <!-- include highchartsjs to build the charts-->
