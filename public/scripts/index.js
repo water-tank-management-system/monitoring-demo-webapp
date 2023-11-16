@@ -271,6 +271,8 @@ const setupUI = (user) => {
       if (waterLevel < waterLevelThreshold) {
         // Set the indicator's color to red
         waterLevelIndicator.style.backgroundColor = 'red';
+        // Send notification
+        sendNotification('Reminder Volume!', 'Air hampir kosong, segera lakukan pengisian ulang!');
       } else {
         // Set the indicator's color to green (or any other color)
         waterLevelIndicator.style.backgroundColor = 'grey';
@@ -284,11 +286,47 @@ const setupUI = (user) => {
         // Change the dirty water indicator's color based on turbidity
         if (turbidity > turbidityThreshold) {
           dirtyWaterIndicator.style.backgroundColor = 'red';
+          // Send notification
+          sendNotification('Reminder Kekeruhan!', 'Air terdeteksi keruh, segera lakukan pembersihan!');
         } else {
           dirtyWaterIndicator.style.backgroundColor = 'grey';
         }
       });
     });
+
+    function sendNotification(title, body) {    
+      // Menggunakan Firebase Cloud Messaging untuk mengirim notifikasi
+
+      messaging.getToken().then((currentToken) => {
+        const payload = {
+            to: currentToken,
+            notification: {
+              title: title,
+              body: body
+            },
+        };
+    
+        // Kirim notifikasi dari server menggunakan token perangkat
+        fetch('https://fcm.googleapis.com/fcm/send', {
+            method: 'POST',
+            headers: {
+                'Authorization': 'key=AAAAEIeXA8Y:APA91bH_WidFVOrPtCN_6hEyUQooz9oXhDYAOG4w_mZeNFw3WroZr4DddQUpk2tgwvCWGa7nMLgQI027a6MueJ_xDTn1BSp4hKUyMlbDQo1GK59r3opoQxn-VuFc7Y28nEc6SlrzBKgf',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(payload),
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Berhasil mengirim notifikasi:', data);
+        })
+        .catch(error => {
+            console.error('Gagal mengirim notifikasi:', error);
+        });
+    })
+    .catch((err) => {
+        console.log('An error occurred while retrieving token. ', err);
+    });
+    }
 
 
     // CHECKBOXES

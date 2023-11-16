@@ -39,3 +39,15 @@ messaging.setBackgroundMessageHandler(function (payload) {
     };
     return self.registration.showNotification(payload.notification.title,notificationOption);
 });
+
+// Fungsi untuk menangani notifikasi dari client side
+self.addEventListener('push', function (event) {
+    const payload = event.data.json();
+    const options = {
+        body: payload.notification.body,
+        icon: payload.notification.icon,
+    };
+    event.waitUntil(
+        self.registration.showNotification(payload.notification.title, options)
+    );
+});
